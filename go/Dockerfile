@@ -4,6 +4,6 @@ WORKDIR /go/src/app
 
 COPY ./ /go/src/app
 
-RUN apk update && apk add git
+RUN apk update && apk add git && go get github.com/labstack/echo/...
 
 CMD ["go", "run", "server.go"]
