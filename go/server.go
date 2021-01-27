@@ -2,25 +2,25 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
-	"net/http/httputil"
+
+	"github.com/labstack/echo"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	dump, err := httputil.DumpRequest(r, true)
-	if err != nil {
-		http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
-		return
-	}
-	fmt.Println(string(dump))
-	fmt.Fprintf(w, "<html><body>hello</body></html>\n")
+type User struct {
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 func main() {
-	var httpServer http.Server
-	http.HandleFunc("/", handler)
-	log.Println("start http listening :8080")
-	httpServer.Addr = ":8080"
-	log.Println(httpServer.ListenAndServe())
+	e := echo.New()
+	e.POST("/users:id", func(c echo.Context) error {
+		u := new(User)
+		fmt.Println(c)
+		if err := c.Bind(u); err != nil {
+			return err
+		}
+		return c.JSON(http.StatusCreated, u)
+	})
+	e.Logger.Fatal(e.Start(":8080"))
 }
