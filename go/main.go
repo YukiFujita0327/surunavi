@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	external.Router.Run()
+	external.Run()
 }
