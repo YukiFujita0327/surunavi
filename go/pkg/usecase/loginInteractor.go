@@ -1,8 +1,15 @@
 package usecase
 
-import "surunavi/go/pkg/adapter/gateways"
+import (
+	"surunavi/go/pkg/domain"
+	"surunavi/go/pkg/usecase/interfaces"
+)
 
-type LoginInterracter struct {
-		LoginRepository gateways.LoginRepository
+type LoginInteractor struct {
+		LoginRepository interfaces.LoginRepository
 }
 
+func (interactor *LoginInteractor) Login(req domain.UserInfo) bool {
+	interactor.LoginRepository.GetUserInfo(req.Id)
+	return true
+}

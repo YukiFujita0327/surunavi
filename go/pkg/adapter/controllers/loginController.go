@@ -4,17 +4,19 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
 	"surunavi/go/pkg/adapter/gateways"
+	"surunavi/go/pkg/domain"
 	"surunavi/go/pkg/usecase"
+	"surunavi/go/pkg/usecase/interfaces"
 )
 
 type LoginController struct {
-	loginInterracter usecase.LoginInterracter
+	loginInteractor interfaces.LoginInteractor
 }
 
 func NewLoginController(conn *gorm.DB) *LoginController {
 	return &LoginController{
-		loginInterracter: usecase.LoginInterracter{
-			LoginRepository: gateways.LoginRepository{
+		loginInteractor: &usecase.LoginInteractor{
+			LoginRepository: &gateways.LoginRepository{
 				Conn: conn,
 			},
 		},
@@ -37,6 +39,6 @@ func (controller *LoginController) Login(c echo.Context) error {
 		return err
 	}
 	// TODO Interactor呼び出し + エラーハンドリングを書く
-
+	controller.loginInteractor.Login(domain.UserInfo{Id: req.Id, Password: req.Password})
 	return c.String(200, "hoge")
 }

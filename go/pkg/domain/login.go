@@ -1,6 +1,6 @@
 package domain
 
-type Login struct {
-	ID			string
-	Password	string
+type UserInfo struct {
+	Id       string
+	Password string
 }

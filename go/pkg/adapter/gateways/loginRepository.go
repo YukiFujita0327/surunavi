@@ -2,6 +2,7 @@ package gateways
 
 import (
 	"github.com/jinzhu/gorm"
+	"surunavi/go/pkg/domain"
 )
 
 type (
@@ -10,3 +11,7 @@ type (
 	}
 )
 
+func (repository *LoginRepository) GetUserInfo(userId string) domain.UserInfo {
+	repository.Conn.Get(userId)
+	return domain.UserInfo{Id: "", Password: ""}
+}
