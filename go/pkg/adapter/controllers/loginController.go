@@ -3,8 +3,10 @@ package controllers
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
+	"net/http"
 	"surunavi/go/pkg/adapter/gateways"
 	"surunavi/go/pkg/domain"
+	_const "surunavi/go/pkg/domain/const"
 	"surunavi/go/pkg/usecase"
 	"surunavi/go/pkg/usecase/interfaces"
 )
@@ -30,7 +32,9 @@ func (controller *LoginController) Login(c echo.Context) error {
 			Password string `json:"Password"`
 		}
 		Response struct {
-			UserInfo bool `json:"UserInfo"`
+			LoginSuccese	_const.LoginResultType `json:"LoginSuccese"`
+			UserId			string `json:"UserId"`
+			UserName		string `json:"UserName"`
 		}
 	)
 	req := Request{}
@@ -38,7 +42,13 @@ func (controller *LoginController) Login(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	// TODO Interactor呼び出し + エラーハンドリングを書く
-	controller.loginInteractor.Login(domain.UserInfo{Id: req.Id, Password: req.Password})
-	return c.String(200, "hoge")
+		// TODO Interactor呼び出し + エラーハンドリングを書く
+	loginSuccese,userinfo := controller.loginInteractor.Login(domain.UserInfo{Id: req.Id, Password: req.Password})
+	res := Response{
+		LoginSuccese : loginSuccese,
+		UserId: userinfo.Id,
+		UserName: userinfo.Name,
+	}
+
+	return c.JSON(http.StatusOK, res)
 }
