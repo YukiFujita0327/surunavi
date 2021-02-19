@@ -1,13 +1,16 @@
 package mysql
 
-import "github.com/jinzhu/gorm"
+import (
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+)
 
 var db *gorm.DB
 
 func Connect() *gorm.DB {
 	var err error
-
-	db, err = gorm.Open("mysql", "root:@tcp(db:3306)/hoge")
+	dsn := "root:@tcp(localhost:3306)/gorm_project?charset=utf8&parseTime=True&loc=Local"
+	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
@@ -16,5 +19,12 @@ func Connect() *gorm.DB {
 }
 
 func CloseConn() {
-	db.Close()
+	_db, err := db.DB()
+	if err != nil {
+		panic(err)
+	}
+	err = _db.Close()
+	if err != nil {
+		panic(err)
+	}
 }

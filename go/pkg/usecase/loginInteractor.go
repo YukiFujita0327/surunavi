@@ -19,5 +19,5 @@ func (interactor *LoginInteractor) Login(req domain.UserInfo) (_const.LoginResul
 	} else if userInfo.Password != req.Password {
 		return _const.MissPassword,userInfo
 	}
-	return _const.Succese,userInfo
+	return _const.Success,userInfo
 }

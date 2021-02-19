@@ -1,7 +1,8 @@
 package gateways
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
+	"surunavi/go/pkg/adapter/gateways/db"
 	"surunavi/go/pkg/domain"
 )
 
@@ -12,6 +13,7 @@ type (
 )
 
 func (repository *LoginRepository) GetUserInfo(userId string) domain.UserInfo {
-	repository.Conn.Get(userId)
-	return domain.UserInfo{Id: "", Password: ""}
+	userInfo := &db.UserInfoModel{}
+	repository.Conn.Where("Id = ?", userId).First(&userInfo)
+	return domain.UserInfo{Id: userInfo.Id, Password: userInfo.Password, Name: userInfo.Name}
 }

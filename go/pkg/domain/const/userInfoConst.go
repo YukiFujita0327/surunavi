@@ -2,7 +2,7 @@ package _const
 
 type LoginResultType int
 const (
-	Succese LoginResultType = iota
+	Success LoginResultType = iota
 	NoUser
 	MissPassword
 )

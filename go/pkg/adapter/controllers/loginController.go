@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
+	"gorm.io/gorm"
 	"net/http"
 	"surunavi/go/pkg/adapter/gateways"
 	"surunavi/go/pkg/domain"
@@ -32,9 +32,9 @@ func (controller *LoginController) Login(c echo.Context) error {
 			Password string `json:"Password"`
 		}
 		Response struct {
-			LoginSuccese	_const.LoginResultType `json:"LoginSuccese"`
-			UserId			string `json:"UserId"`
-			UserName		string `json:"UserName"`
+			LoginSuccess _const.LoginResultType `json:"LoginSuccess"`
+			UserId       string                 `json:"UserId"`
+			UserName     string                 `json:"UserName"`
 		}
 	)
 	req := Request{}
@@ -43,11 +43,11 @@ func (controller *LoginController) Login(c echo.Context) error {
 		return err
 	}
 		// TODO Interactor呼び出し + エラーハンドリングを書く
-	loginSuccese,userinfo := controller.loginInteractor.Login(domain.UserInfo{Id: req.Id, Password: req.Password})
+	loginSuccess,userinfo := controller.loginInteractor.Login(domain.UserInfo{Id: req.Id, Password: req.Password})
 	res := Response{
-		LoginSuccese : loginSuccese,
-		UserId: userinfo.Id,
-		UserName: userinfo.Name,
+		LoginSuccess: loginSuccess,
+		UserId:       userinfo.Id,
+		UserName:     userinfo.Name,
 	}
 
 	return c.JSON(http.StatusOK, res)
