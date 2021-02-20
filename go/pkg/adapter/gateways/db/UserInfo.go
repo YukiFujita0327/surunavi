@@ -1,7 +1,7 @@
 package db
 
-type UserInfoModel struct {
-	Id			string
-	Password	string
-	Name		string
+type UserInfo struct {
+	BaseModel					`gorm:"embedded"`
+	Password	string			`gorm:"column:PASSWORD"`
+	Name		string			`gorm:"column:NAME"`
 }

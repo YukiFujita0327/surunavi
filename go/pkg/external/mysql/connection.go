@@ -9,7 +9,7 @@ var db *gorm.DB
 
 func Connect() *gorm.DB {
 	var err error
-	dsn := "root:@tcp(localhost:3306)/gorm_project?charset=utf8&parseTime=True&loc=Local"
+	dsn := "root:hogehoge@tcp(localhost:3306)/SURUNAVI?charset=utf8&parseTime=True&loc=Local"
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)

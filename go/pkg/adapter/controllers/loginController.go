@@ -28,7 +28,7 @@ func NewLoginController(conn *gorm.DB) *LoginController {
 func (controller *LoginController) Login(c echo.Context) error {
 	type(
 		Request struct {
-			Id       string `json:"Id"`
+			UserId   string `json:"Id"`
 			Password string `json:"Password"`
 		}
 		Response struct {
@@ -38,12 +38,16 @@ func (controller *LoginController) Login(c echo.Context) error {
 		}
 	)
 	req := Request{}
-	err := c.Bind(&req)
-	if err != nil {
-		return err
-	}
+	req.UserId = c.QueryParam("UserId")
+	req.Password = c.QueryParam("Password")
+
+	// POSTにする！
+	//err := c.Bind(&req)
+	//if err != nil {
+	//return err
+	//}
 		// TODO Interactor呼び出し + エラーハンドリングを書く
-	loginSuccess,userinfo := controller.loginInteractor.Login(domain.UserInfo{Id: req.Id, Password: req.Password})
+	loginSuccess,userinfo := controller.loginInteractor.Login(domain.UserInfo{Id: req.UserId, Password: req.Password})
 	res := Response{
 		LoginSuccess: loginSuccess,
 		UserId:       userinfo.Id,
