@@ -12,8 +12,11 @@ type (
 	}
 )
 
-func (repository *LoginRepository) GetUserInfo(userId string) domain.UserInfo {
+func (repository *LoginRepository) GetUserInfo(userId string) (domain.UserInfo, error) {
 	userInfo := &db.UserInfo{}
-	repository.Conn.Where("Id = ?", userId).First(&userInfo)
-	return domain.UserInfo{Id: userInfo.Id, Password: userInfo.Password, Name: userInfo.Name}
+	if err := repository.Conn.Where("Id = ?", userId).First(&userInfo).Error
+	err != nil {
+		return domain.UserInfo{}, err
+	}
+	return domain.UserInfo{Id: userInfo.Id, Password: userInfo.Password, Name: userInfo.Name},nil
 }

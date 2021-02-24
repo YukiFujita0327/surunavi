@@ -5,4 +5,5 @@ const (
 	Success LoginResultType = iota
 	NoUser
 	MissPassword
+	DbError
 )

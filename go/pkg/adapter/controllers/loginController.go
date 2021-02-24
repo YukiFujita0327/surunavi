@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"surunavi/go/pkg/adapter/gateways"
 	"surunavi/go/pkg/domain"
-	_const "surunavi/go/pkg/domain/const"
 	"surunavi/go/pkg/usecase"
+	_const "surunavi/go/pkg/usecase/const"
 	"surunavi/go/pkg/usecase/interfaces"
 )
 
@@ -19,6 +19,7 @@ func NewLoginController(conn *gorm.DB) *LoginController {
 	return &LoginController{
 		loginInteractor: &usecase.LoginInteractor{
 			LoginRepository: &gateways.LoginRepository{
+				// DBのコネクションを貼りっぱなしになっているが、大丈夫か？
 				Conn: conn,
 			},
 		},
@@ -33,26 +34,24 @@ func (controller *LoginController) Login(c echo.Context) error {
 		}
 		Response struct {
 			LoginSuccess _const.LoginResultType `json:"LoginSuccess"`
-			UserId       string                 `json:"UserId"`
-			UserName     string                 `json:"UserName"`
+			UserId       string                  `json:"UserId"`
+			UserName     string                  `json:"UserName"`
 		}
 	)
 	req := Request{}
-	req.UserId = c.QueryParam("UserId")
-	req.Password = c.QueryParam("Password")
 
-	// POSTにする！
-	//err := c.Bind(&req)
-	//if err != nil {
-	//return err
-	//}
-		// TODO Interactor呼び出し + エラーハンドリングを書く
-	loginSuccess,userinfo := controller.loginInteractor.Login(domain.UserInfo{Id: req.UserId, Password: req.Password})
+	err := c.Bind(&req)
+	if err != nil {
+	return err
+	}
+	loginSuccess, userInfo, err := controller.loginInteractor.Login(domain.UserInfo{Id: req.UserId, Password: req.Password})
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, nil)
+	}
 	res := Response{
 		LoginSuccess: loginSuccess,
-		UserId:       userinfo.Id,
-		UserName:     userinfo.Name,
+		UserId:       userInfo.Id,
+		UserName:     userInfo.Name,
 	}
-
 	return c.JSON(http.StatusOK, res)
 }

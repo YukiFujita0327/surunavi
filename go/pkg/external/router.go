@@ -12,6 +12,6 @@ func Run() {
 	var e = echo.New()
 	loginController := controllers.NewLoginController(conn)
 
-	e.GET("/login", func(c echo.Context) error { return loginController.Login(c)})
+	e.POST("/login", func(c echo.Context) error { return loginController.Login(c)})
 	e.Start(":8080")
 }
