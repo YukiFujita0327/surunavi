@@ -2,9 +2,9 @@ package mysql
 
 import (
 	"fmt"
+	"github.com/go-ini/ini"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"os"
 )
 
 var db *gorm.DB
@@ -12,13 +12,15 @@ var db *gorm.DB
 func Connect() *gorm.DB {
 	var err error
 	var dsn string
-	user := os.Getenv("GOROOT")
-	password := os.Getenv("MYSQL_PASSWORD")
-	hostname := os.Getenv("MYSQL_HOSTNAME")
-	port := os.Getenv("MYSQL_PORT")
-	dbname := os.Getenv("MYSQL_DBNAME")
-	dsn	= user + ":" + password + "@tcp(" + hostname + ":" + port + ")/" + dbname +"?charset=utf8&parseTime=True&loc=Local"
- 	fmt.Printf(user)
+	config ,err := ini.Load("./pkg/external/config/config.ini")
+	passwordConf ,err := ini.Load("./pkg/external/config/password.ini")
+	fmt.Print(config)
+	user := config.Section("db").Key("MYSQL_USER").MustString("root")
+	password := passwordConf.Section("db").Key("MYSQL_PASSWORD").MustString("hogehoge")
+	hostName := config.Section("db").Key("MYSQL_HOSTNAME").MustString("localhost")
+	port := config.Section("db").Key("MYSQL_PORT").String()
+	dbName := config.Section("db").Key("MYSQL_DBNAME").String()
+	dsn    = user + ":" + password + "@tcp(" + hostName + ":" + port + ")/" + dbName +"?charset=utf8&parseTime=True&loc=Local"
 	fmt.Println(dsn)
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
