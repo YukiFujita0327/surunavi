@@ -1,6 +1,6 @@
 package interfaces
 
-import "surunavi/go/pkg/domain"
+import "surunavi/pkg/domain"
 
 type LoginRepository interface {
 	GetUserInfo(string) (domain.UserInfo, error)

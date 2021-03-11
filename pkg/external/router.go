@@ -2,8 +2,8 @@ package external
 
 import (
 	"github.com/labstack/echo"
-	"surunavi/go/pkg/adapter/controllers"
-	"surunavi/go/pkg/external/mysql"
+	"surunavi/pkg/adapter/controllers"
+	"surunavi/pkg/external/mysql"
 )
 
 func Run() {

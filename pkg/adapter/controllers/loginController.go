@@ -4,11 +4,11 @@ import (
 	"github.com/labstack/echo"
 	"gorm.io/gorm"
 	"net/http"
-	"surunavi/go/pkg/adapter/gateways"
-	"surunavi/go/pkg/domain"
-	"surunavi/go/pkg/usecase"
-	_const "surunavi/go/pkg/usecase/const"
-	"surunavi/go/pkg/usecase/interfaces"
+	"surunavi/pkg/adapter/gateways"
+	"surunavi/pkg/domain"
+	"surunavi/pkg/usecase"
+	_const "surunavi/pkg/usecase/const"
+	"surunavi/pkg/usecase/interfaces"
 )
 
 type LoginController struct {
@@ -34,8 +34,8 @@ func (controller *LoginController) Login(c echo.Context) error {
 		}
 		Response struct {
 			LoginSuccess _const.LoginResultType `json:"LoginSuccess"`
-			UserId       string                  `json:"UserId"`
-			UserName     string                  `json:"UserName"`
+			UserId       string                 `json:"UserId"`
+			UserName     string                 `json:"UserName"`
 		}
 	)
 	req := Request{}

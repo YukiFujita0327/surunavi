@@ -1,16 +1,16 @@
 package usecase
 
 import (
-	"surunavi/go/pkg/domain"
-	_const "surunavi/go/pkg/usecase/const"
-	"surunavi/go/pkg/usecase/interfaces"
+	"surunavi/pkg/domain"
+	_const "surunavi/pkg/usecase/const"
+	"surunavi/pkg/usecase/interfaces"
 )
 
 type LoginInteractor struct {
 		LoginRepository interfaces.LoginRepository
 }
 
-func (interactor *LoginInteractor) Login(req domain.UserInfo) (_const.LoginResultType,domain.UserInfo, error) {
+func (interactor *LoginInteractor) Login(req domain.UserInfo) (_const.LoginResultType, domain.UserInfo, error) {
 
 	userInfo, err := interactor.LoginRepository.GetUserInfo(req.Id)
 

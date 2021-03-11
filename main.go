@@ -2,7 +2,7 @@
 package main
 
 import (
-	"surunavi/go/pkg/external"
+	"surunavi/pkg/external"
 )
 
 func main() {

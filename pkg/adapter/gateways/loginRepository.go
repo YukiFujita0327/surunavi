@@ -2,8 +2,8 @@ package gateways
 
 import (
 	"gorm.io/gorm"
-	"surunavi/go/pkg/adapter/gateways/db"
-	"surunavi/go/pkg/domain"
+	"surunavi/pkg/adapter/gateways/db"
+	"surunavi/pkg/domain"
 )
 
 type (
